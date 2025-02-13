@@ -1,0 +1,69 @@
+# # Use an official Python runtime as a parent image
+# FROM python:3.12
+
+# LABEL maintainer="ameen-alam"
+# # Set the working directory in the container
+# WORKDIR /code
+# # Install system dependencies required for potential Python packages
+# RUN apt-get update && apt-get install -y \
+#     build-essential \
+#     libpq-dev \
+#     && rm -rf /var/lib/apt/lists/*
+
+# # Install Poetry
+# RUN pip install poetry
+
+# # Copy the current directory contents into the container at /code
+# COPY . /code/
+
+# # Configuration to avoid creating virtual environments inside the Docker container
+# RUN poetry config virtualenvs.create false
+
+# # Install dependencies including development ones
+# RUN poetry install
+
+# # Make port 8000 available to the world outside this container
+# EXPOSE 8000
+
+# # Run the streamlit app
+# CMD ["poetry", "run", "streamlit", "run", "app.main", "--server.port=8501", "--server.address=0.0.0.0"]
+
+
+
+# Use an official Python runtime as a base image
+FROM python:3.12
+
+LABEL maintainer="ameen-alam"
+
+# Set the working directory inside the container
+WORKDIR /code
+
+# Prevent buffering of logs
+ENV PYTHONUNBUFFERED=1
+
+# Install system dependencies required for some Python packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Poetry globally
+RUN pip install poetry
+
+# Copy only the dependency files first (to leverage Docker caching)
+COPY pyproject.toml poetry.lock ./
+
+# Avoid creating virtual environments inside the container
+RUN poetry config virtualenvs.create false
+
+# Ensure poetry.lock is up-to-date before installing dependencies
+RUN poetry install --no-root
+
+# Copy the rest of the application files into the container
+COPY . /code/
+
+# Expose the Streamlit port
+EXPOSE 8501
+
+# Run the Streamlit app
+CMD ["poetry", "run", "streamlit", "run", "app/main.py", "--server.port=8501", "--server.address=0.0.0.0"]

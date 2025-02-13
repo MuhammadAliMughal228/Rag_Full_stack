@@ -1,0 +1,26 @@
+version: '3.8'
+name: template01
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend:/code  # Sync local development directory with the container
+    ports:
+      - "8000:8000"  # Expose container port 8000 to host port 8000  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend:/code  # Sync local development directory with the container
+    ports:
+      - "8501:8501"  # Expose container port 8000 to host port 8000  
+
+# volumes:
+#   postgres_db:
+#     driver: local
+networks:
+  default:
+    driver: bridge
