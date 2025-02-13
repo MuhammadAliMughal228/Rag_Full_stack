@@ -10,7 +10,6 @@ st.write("Upload PDFs and chat with their content")
 # File uploader
 uploaded_file = st.file_uploader("Choose a PDF file", type="pdf")
 if uploaded_file:
-
     try:
         response = requests.post(
             f"{BACKEND_URL}/upload-pdf/",
@@ -23,21 +22,42 @@ if uploaded_file:
     except Exception as e:
         st.error(f"Exception: {str(e)}")
 
+# Initialize chat history in session state
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 
-# Chat interface
-session_id = "abc"
-user_input = st.text_input("Your question:")
+# Display chat history
+for message in st.session_state.chat_history:
+    with st.chat_message(message["role"]):
+        st.write(message["content"])
+
+# Chat input
+user_input = st.chat_input("Your question:")
 
 if user_input:
+    # Add user message to chat history
+    st.session_state.chat_history.append({"role": "user", "content": user_input})
+
+    # Display user message
+    with st.chat_message("user"):
+        st.write(user_input)
+
+    # Send question to backend
     response = requests.post(
         f"{BACKEND_URL}/ask/",
-        json={"session_id": session_id, "question": user_input}
+        json={"session_id": "default_session", "question": user_input}
     )
+
     if response.status_code == 200:
         data = response.json()
-        st.write("Assistant:", data['answer'])
-        # st.write("Chat History:")
-        # for message in data['chat_history']:
-        #     st.write(f"{message.type}: {message.content}")
+
+        # Add assistant message to chat history
+        st.session_state.chat_history.append({"role": "assistant", "content": data['answer']})
+
+        # Display assistant message
+        with st.chat_message("assistant"):
+            st.write(data['answer'])
     else:
         st.error("Failed to get a response from the chatbot.")
+
+
