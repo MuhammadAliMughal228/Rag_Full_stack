@@ -176,7 +176,7 @@ app = FastAPI()
 store: Dict[str, BaseChatMessageHistory] = {}
 
 # Initialize LLM
-llm = ChatGroq(groq_api_key=GROQ_API_KEY, model_name="Gemma2-9b-It")
+llm = ChatGroq(groq_api_key=GROQ_API_KEY, model_name="llama-3.3-70b-versatile")
 
 class QuestionRequest(BaseModel):
     session_id: str
@@ -239,8 +239,15 @@ async def ask_question(request: QuestionRequest):
         "'I don’t know. The provided documents do not contain relevant information.'\n\n"
         "Strictly **do not generate responses based on prior knowledge or external information**.\n"
         "Never attempt to answer a question unless supporting evidence is found in the context.\n\n"
+        
+        "🔹 **Handling Follow-up Questions**:\n"
+        "If the user asks for **more details or examples** related to a previous question, "
+        "consider the **previous user questions** along with the retrieved context and provide a **detailed** response.\n"
+        "Ensure the answer **builds upon the prior discussion** and provides **examples if relevant**.\n\n"
+        
         "🔹 **Retrieved Context**:\n{context}"
     )
+
 
     qa_prompt = ChatPromptTemplate.from_messages(
         [
