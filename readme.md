@@ -105,13 +105,6 @@ This will:
 - Run a manual test: `curl -X POST "http://localhost:8000/ask/" -H "Content-Type: application/json" -d '{"session_id": "default", "question": "What is AI?"}'`
 
 ---
-
-## 📌 Future Improvements
-- ✅ Support for multiple PDFs
-- ✅ UI enhancements for better user experience
-- ✅ Deploy on cloud (AWS/GCP/Azure)
-
----
 .
 
 🚀 **Happy Coding!**
