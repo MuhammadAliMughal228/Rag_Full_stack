@@ -43,8 +43,8 @@ Before you begin, make sure you have the following installed:
 ## 🚀 Setup & Installation
 ### **1️⃣ Clone the Repository**
 ```sh
-git clone https://github.com/ahadnaeem785/Conversational-RAG-Chatbot.git
-cd Conversational-RAG-Chatbot
+git clone https://github.com/ahadnaeem785/https://github.com/ahadnaeem785/Full_Stack_Rag_App
+cd Full_Stack_Rag_App
 ```
 
 ### **2️⃣ Set Up Environment Variables**
