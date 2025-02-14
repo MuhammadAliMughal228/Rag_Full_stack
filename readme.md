@@ -1,5 +1,10 @@
 # Conversational RAG with PDF Uploads and Chat History
 
+## 📸 Demo
+https://github.com/user-attachments/assets/79102d3f-548b-4db8-b261-9c48cc27e1de
+
+
+
 ## 📌 Overview
 This project is a **Conversational Retrieval-Augmented Generation (RAG) chatbot** that allows users to:
 - **Upload PDF documents** and extract their content into a vector database.
