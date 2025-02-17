@@ -1,6 +1,5 @@
 import streamlit as st
 import requests
-
 # FastAPI backend URL
 BACKEND_URL = "http://backend:8000"
 
